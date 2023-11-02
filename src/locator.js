@@ -7,6 +7,21 @@ const DEG_FORMATTER = Intl.NumberFormat('de-DE', { minimumFractionDigits: 1, max
 const LOCATION_ID = 'location';
 const CAMERA_INPUT_ID = 'camera';
 
+// own code start
+const options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000
+};
+
+let watchID;
+let geolocation;
+
+function handleErr(err) {
+    console.error(err.message);
+}
+// own code end
+
 //map state
 var map;
 var ranger;
@@ -86,4 +101,19 @@ window.onload = () => {
         });
     }
 
+    // own code
+    if('geolocation' in navigator){
+        geolocation = navigator.geolocation;
+        watchID = geolocation.watchPosition(
+            updatePosition, handleErr, options
+        );
+    }
 }
+
+// own code start
+window.onbeforeunload = () => {
+    if (geolocation) {
+        geolocation.clearWatch(watchID);
+    }
+}
+// own code end
