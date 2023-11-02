@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="camera.js" type="module"></script>
+</head>
+
+<body>
+    <a href="index.html">
+        <input id="back" type="image" style="width: 1em; height: 1em;" />
+    </a>
+    <div style="display: flex; flex-direction: column; justify-content: center; align-content: center; column-gap: 1em;">
+        <video id="video">Video stream not available.</video>
+        <button id="takephotobutton" style="width: fit-content;">Take photo</button>
+        <canvas id="canvas"></canvas>
+        <div>
+            <img id="photo" alt="The screen capture will appear in this box." />
+        </div>
+    </div>
+</body>
+
+</html>

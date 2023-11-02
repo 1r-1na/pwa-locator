@@ -101,13 +101,14 @@ window.onload = () => {
         });
     }
 
-    // own code
+    // own code start
     if('geolocation' in navigator){
         geolocation = navigator.geolocation;
         watchID = geolocation.watchPosition(
             updatePosition, handleErr, options
         );
     }
+    // own code end
 }
 
 // own code start
