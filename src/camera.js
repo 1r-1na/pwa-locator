@@ -11,8 +11,8 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const photo = document.getElementById("photo");
 const backButton = document.getElementById("back");
-const stopButton = document.getElementById("stop");
-const startButton = document.getElementById("start");
+const pauseButton = document.getElementById("pause");
+const playButton = document.getElementById("play");
 const saveButton = document.getElementById("save");
 
 function adjustAspectRations(event) {
@@ -31,8 +31,21 @@ function adjustAspectRations(event) {
   }
 }
 
-//further initializations as soon as a video stream appears
-video.addEventListener("canplay", adjustAspectRations, false);
+function toVideoMode() {
+  video.style.display = "block";
+  photo.style.display = "none";
+  pauseButton.style.display = "block";
+  playButton.style.display = "none";
+  saveButton.disabled = true;
+}
+
+function toPictureMode() {
+  video.style.display = "none";
+  photo.style.display = "block";
+  pauseButton.style.display = "none";
+  playButton.style.display = "block";
+  saveButton.disabled = false;
+}
 
 function takePicture() {
   const context = canvas.getContext("2d");
@@ -42,28 +55,23 @@ function takePicture() {
   photo.setAttribute("src", imageData);
 }
 
-stopButton.addEventListener(
+//further initializations as soon as a video stream appears
+video.addEventListener("canplay", adjustAspectRations, false);
+
+pauseButton.addEventListener(
   "click",
   (ev) => {
-    streaming = false;
+    toPictureMode();
     takePicture();
-    video.style.display = "none";
-    photo.style.display = "block";
-    stopButton.style.display = "none";
-    startButton.style.display = "block";
     ev.preventDefault();
   },
   false
 );
 
-startButton.addEventListener(
+playButton.addEventListener(
   "click",
   (ev) => {
-    streaming = true;
-    video.style.display = "block";
-    photo.style.display = "none";
-    stopButton.style.display = "block";
-    startButton.style.display = "none";
+    toVideoMode();
     ev.preventDefault();
   },
   false
@@ -71,12 +79,11 @@ startButton.addEventListener(
 
 window.onload = () => {
   backButton.src = backImage;
-  stopButton.src = pauseImage;
-  startButton.src = playImage;
+  pauseButton.src = pauseImage;
+  playButton.src = playImage;
   saveButton.src = saveImage;
 
-  startButton.style.display = "none";
-  photo.style.display = "none";
+  toVideoMode();
 
   navigator.mediaDevices
     .getUserMedia({
