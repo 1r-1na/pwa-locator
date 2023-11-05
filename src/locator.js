@@ -1,4 +1,10 @@
 import cameraImage from "./camera.svg";
+// own code start
+import { CURRENT_POS_KEY } from "./keys.js";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+//own code end
 
 const COORD_FORMATTER = Intl.NumberFormat("de-DE", {
   minimumFractionDigits: 6,
@@ -36,6 +42,35 @@ let geolocation;
 
 function handleErr(err) {
   console.error(err.message);
+}
+
+function setMarkers() {
+  photoLocations = Object.keys(localStorage)?.filter(
+    (key) => key !== CURRENT_POS_KEY
+  );
+  currentLocation = localStorage.getItem(CURRENT_POS_KEY);
+
+  if (photoLocations) {
+    delete L.Icon.Default.prototype.__getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: iconRetinaUrl,
+      iconUrl: iconUrl,
+      shadowUrl: shadowUrl,
+    });
+
+    photoLocations.map((ll) => {
+      const photoUrl = localStorage.getItem(ll);
+      if (photoUrl) {
+        const marker = L.marker(JSON.parse(ll)).addTo(map);
+        marker.bindPopup(
+          `<img src="${photoUrl}" width="160px" height="130px"/>`
+        );
+        if (ll === currentLocation) {
+          marker.openPopup();
+        }
+      }
+    });
+  }
 }
 // own code end
 
@@ -100,6 +135,10 @@ function updatePosition(position) {
 
   ranger.setLatLng(ll);
   ranger.setRadius(coords.accuracy);
+
+  // own code start
+  localStorage.setItem(CURRENT_POS_KEY, JSON.stringify(ll));
+  //own code end
 }
 
 /* setup component */
@@ -150,21 +189,9 @@ window.onload = () => {
   if ("geolocation" in navigator) {
     geolocation = navigator.geolocation;
     watchID = geolocation.watchPosition(updatePosition, handleErr, options);
-
-    //TODO
-    const imageUrl = localStorage.getItem("my-image");
-    if (imageUrl) {
-      geolocation.getCurrentPosition((pos) => {
-        var marker = L.marker([
-          pos.coords.latitude,
-          pos.coords.longitude,
-        ]).addTo(map);
-        marker
-          .bindPopup(`<img src="${imageUrl}" width="160px" height="130px"/>`)
-          .openPopup();
-      });
-    }
   }
+
+  setMarkers();
   // own code end
 };
 

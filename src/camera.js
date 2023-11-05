@@ -2,6 +2,7 @@ import backImage from "./x-circle.svg";
 import saveImage from "./save.svg";
 import pauseImage from "./pause-btn.svg";
 import playImage from "./play-btn.svg";
+import { CURRENT_POS_KEY } from "./keys.js";
 
 let width = 320; // We will scale the photo width to this
 let height = 0; // This will be computed based on the input stream
@@ -88,7 +89,8 @@ saveButton.addEventListener(
   (ev) => {
     const reader = new FileReader();
     reader.onloadend = function () {
-      localStorage.setItem("my-image", reader.result);
+      const ll = localStorage.getItem(CURRENT_POS_KEY);
+      localStorage.setItem(ll, reader.result);
     };
     reader.readAsDataURL(canvasImgBlob);
   },
