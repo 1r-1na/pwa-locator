@@ -6,14 +6,15 @@ import playImage from "./play-btn.svg";
 let width = 320; // We will scale the photo width to this
 let height = 0; // This will be computed based on the input stream
 let streaming = false; //flag for a 1st-time init
+let canvasImgBlob = null;
 
 const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const photo = document.getElementById("photo");
 const backButton = document.getElementById("back");
 const pauseButton = document.getElementById("pause");
 const playButton = document.getElementById("play");
 const saveButton = document.getElementById("save");
+const photo = document.getElementById("photo");
+const canvas = new OffscreenCanvas(320, 260);
 
 function adjustAspectRations(event) {
   //perform a one-time adjustment of video's and photo's aspect ratio
@@ -25,8 +26,8 @@ function adjustAspectRations(event) {
 
     video.setAttribute("width", width);
     video.setAttribute("height", height);
-    canvas.setAttribute("width", width);
-    canvas.setAttribute("height", height);
+    canvas.width = width;
+    canvas.height = height;
     streaming = true;
   }
 }
@@ -51,8 +52,13 @@ function takePicture() {
   const context = canvas.getContext("2d");
   context.drawImage(video, 0, 0, width, height);
 
-  const imageData = canvas.toDataURL("image/jpeg");
-  photo.setAttribute("src", imageData);
+  canvas.convertToBlob({ type: "image/jpeg" }).then((blob) => {
+    canvasImgBlob = blob;
+    const imageData = URL.createObjectURL(blob);
+    photo.width = width;
+    photo.height = height;
+    photo.src = imageData;
+  });
 }
 
 //further initializations as soon as a video stream appears
@@ -73,6 +79,18 @@ playButton.addEventListener(
   (ev) => {
     toVideoMode();
     ev.preventDefault();
+  },
+  false
+);
+
+saveButton.addEventListener(
+  "click",
+  (ev) => {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      localStorage.setItem("my-image", reader.result);
+    };
+    reader.readAsDataURL(canvasImgBlob);
   },
   false
 );
