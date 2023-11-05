@@ -1,6 +1,6 @@
 import cameraImage from "./camera.svg";
 // own code start
-import { CURRENT_POS_KEY } from "./keys.js";
+import { CURRENT_POS_KEY, LATEST_POS_KEY } from "./keys.js";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
@@ -45,12 +45,12 @@ function handleErr(err) {
 }
 
 function setMarkers() {
-  photoLocations = Object.keys(localStorage)?.filter(
-    (key) => key !== CURRENT_POS_KEY
+  const photoLocations = Object.keys(localStorage)?.filter(
+    (key) => key !== CURRENT_POS_KEY && key !== LATEST_POS_KEY
   );
-  currentLocation = localStorage.getItem(CURRENT_POS_KEY);
+  const latestPosition = localStorage.getItem(LATEST_POS_KEY);
 
-  if (photoLocations) {
+  if (photoLocations.length > 0) {
     delete L.Icon.Default.prototype.__getIconUrl;
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: iconRetinaUrl,
@@ -65,7 +65,7 @@ function setMarkers() {
         marker.bindPopup(
           `<img src="${photoUrl}" width="160px" height="130px"/>`
         );
-        if (ll === currentLocation) {
+        if (ll === latestPosition) {
           marker.openPopup();
         }
       }
