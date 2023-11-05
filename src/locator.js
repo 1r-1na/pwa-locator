@@ -150,6 +150,20 @@ window.onload = () => {
   if ("geolocation" in navigator) {
     geolocation = navigator.geolocation;
     watchID = geolocation.watchPosition(updatePosition, handleErr, options);
+
+    //TODO
+    const imageUrl = localStorage.getItem("my-image");
+    if (imageUrl) {
+      geolocation.getCurrentPosition((pos) => {
+        var marker = L.marker([
+          pos.coords.latitude,
+          pos.coords.longitude,
+        ]).addTo(map);
+        marker
+          .bindPopup(`<img src="${imageUrl}" width="160px" height="130px"/>`)
+          .openPopup();
+      });
+    }
   }
   // own code end
 };
