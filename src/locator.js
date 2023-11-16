@@ -131,7 +131,7 @@ function updatePosition(position) {
         </dl>`;
   var ll = [coords.latitude, coords.longitude];
 
-  map.setView(ll);
+  //map.setView(ll);
 
   ranger.setLatLng(ll);
   ranger.setRadius(coords.accuracy);

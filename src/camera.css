@@ -7,6 +7,8 @@ body {
 }
 
 div#main {
+    display: flex;
+    justify-content: center;
     position: fixed;
     left: 0px;
     top: 0px;
@@ -45,11 +47,5 @@ input[type='image']:disabled {
 }
 
 video#video {
-    height: 100%;
-    width: 100%;
-}
-
-img#photo {
-    height: 100%;
     width: 100%;
 }
