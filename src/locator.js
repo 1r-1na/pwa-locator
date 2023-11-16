@@ -63,7 +63,7 @@ function setMarkers() {
       if (photoUrl) {
         const marker = L.marker(JSON.parse(ll)).addTo(map);
         marker.bindPopup(
-          `<img src="${photoUrl}" width="160px" height="130px"/>`
+          `<img src="${photoUrl}" width="160px" />`
         );
         if (ll === latestPosition) {
           marker.openPopup();

@@ -9,6 +9,7 @@ body {
 div#main {
     display: flex;
     justify-content: center;
+    align-items: center;
     position: fixed;
     left: 0px;
     top: 0px;

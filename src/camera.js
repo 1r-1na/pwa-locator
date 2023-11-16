@@ -19,22 +19,22 @@ const canvas = new OffscreenCanvas(320, 260);
 
 function adjustAspectRations() {
   width = video.offsetWidth;
-  height = video.offsetHeight;
+  height = video.videoHeight / video.videoWidth * video.offsetWidth;
 }
 
 function toVideoMode() {
-  video.style.display = "block";
+  video.style.display = "inline-block";
   photo.style.display = "none";
-  pauseButton.style.display = "block";
+  pauseButton.style.display = "inline-block";
   playButton.style.display = "none";
   saveButton.disabled = true;
 }
 
 function toPictureMode() {
   video.style.display = "none";
-  photo.style.display = "block";
+  photo.style.display = "inline-block";
   pauseButton.style.display = "none";
-  playButton.style.display = "block";
+  playButton.style.display = "inline-block";
   saveButton.disabled = false;
 }
 
