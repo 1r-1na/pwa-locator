@@ -8,3 +8,8 @@ Locator uses the following open source contributions:
 * [OpenStreetMap](https://www.openstreetmap.org/about) to get map data;
 * [Parcel](https://parceljs.org) as a build tool;
 * [Bootstrap Icons](https://icons.getbootstrap.com) for beautiful, professional SVG icons.
+
+#
+Created by Irina Grabher Meier
+
+App available under https://pwa-locator-igr.netlify.app/
