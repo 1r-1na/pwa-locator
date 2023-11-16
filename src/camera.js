@@ -58,7 +58,7 @@ function drawImage() {
   // draw taken picture
   context.drawImage(video, 0, 0, width, height);
   // draw current coordinates
-  context.font = "48px, serif";
+  context.font = "48px serif";
   const textMetrics = context.measureText(currentCoordinates);
   const xPos = canvas.width / 2 - textMetrics.width / 2;
   const yPos = canvas.height;
