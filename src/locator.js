@@ -99,7 +99,7 @@ function configureMap(latLngArray) {
   ranger = L.circle(latLngArray, { radius: 20.0 }).addTo(map);
 }
 
-function updatePosition(position, initial) {
+function updatePosition(position) {
   const locatorLeftDiv = document.getElementById(LOCATION_LEFT_ID);
   const locatorMiddleDiv = document.getElementById(LOCATION_MIDDLE_ID);
 
@@ -188,11 +188,7 @@ window.onload = () => {
   // own code start
   if ("geolocation" in navigator) {
     geolocation = navigator.geolocation;
-    watchID = geolocation.watchPosition(
-      (p) => updatePosition(p, true),
-      handleErr,
-      options
-    );
+    watchID = geolocation.watchPosition(updatePosition, handleErr, options);
   }
 
   setMarkers();
