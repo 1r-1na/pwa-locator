@@ -62,9 +62,7 @@ function setMarkers() {
       const photoUrl = localStorage.getItem(ll);
       if (photoUrl) {
         const marker = L.marker(JSON.parse(ll)).addTo(map);
-        marker.bindPopup(
-          `<img src="${photoUrl}" width="160px" />`
-        );
+        marker.bindPopup(`<img src="${photoUrl}" width="160px" />`);
         if (ll === latestPosition) {
           marker.openPopup();
         }
@@ -101,7 +99,7 @@ function configureMap(latLngArray) {
   ranger = L.circle(latLngArray, { radius: 20.0 }).addTo(map);
 }
 
-function updatePosition(position) {
+function updatePosition(position, initial) {
   const locatorLeftDiv = document.getElementById(LOCATION_LEFT_ID);
   const locatorMiddleDiv = document.getElementById(LOCATION_MIDDLE_ID);
 
@@ -131,7 +129,9 @@ function updatePosition(position) {
         </dl>`;
   var ll = [coords.latitude, coords.longitude];
 
-  //map.setView(ll);
+  if (initial) {
+    map.setView(ll);
+  }
 
   ranger.setLatLng(ll);
   ranger.setRadius(coords.accuracy);
@@ -188,7 +188,11 @@ window.onload = () => {
   // own code start
   if ("geolocation" in navigator) {
     geolocation = navigator.geolocation;
-    watchID = geolocation.watchPosition(updatePosition, handleErr, options);
+    watchID = geolocation.watchPosition(
+      (p) => updatePosition(p, true),
+      handleErr,
+      options
+    );
   }
 
   setMarkers();
